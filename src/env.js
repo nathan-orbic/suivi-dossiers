@@ -3,11 +3,8 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    AUTH_SECRET:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
-    DATABASE_URL: z.string().url(),
+    AUTH_SECRET: z.string(),
+    DATABASE_URL: z.string().url().regex(/^postgres(ql)?:\/\//, "DATABASE_URL must start with postgresql://"),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
